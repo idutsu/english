@@ -3,7 +3,7 @@ import torch
 
 MODEL_PATH = "/models/Llama-3-ELYZA-JP-8B"
 
-print("🔄 モデルロード中...")
+print("モデルロード中...")
 tok = AutoTokenizer.from_pretrained(MODEL_PATH)
 model = AutoModelForCausalLM.from_pretrained(
     MODEL_PATH,
@@ -22,7 +22,7 @@ inputs = tok(prompt, return_tensors="pt").to("cuda")
 with torch.no_grad():
     outputs = model.generate(
         **inputs,
-        max_new_tokens=100,
+        max_new_tokens=1000,
         do_sample=True,
         temperature=0.8,
         top_p=0.95,
