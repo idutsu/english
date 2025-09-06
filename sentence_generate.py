@@ -101,16 +101,16 @@ for phrase in phrases:
         try:
             resp = requests.post(f"{API_BASE_URL}/insert/outputs", json=out, timeout=30)
             resp.raise_for_status()
-            print(f"📝 正しいJSON出力の保存に成功しました (phrase_id={phrase_id}):", resp.json())
+            print(f"📝 正しいJSON出力の保存に成功しました):", resp.json())
         except requests.RequestException as e:
-            print(f"⚠️ 正しいJSON出力の保存に失敗しました (phrase_id={phrase_id}):", e)
+            print(f"⚠️ 正しいJSON出力の保存に失敗しました :", e)
         # 例文をDB（sents）に保存
         payload = [{"en": ex["en"], "ja": ex["ja"], "phrase": phrase_id} for ex in result["data"]]
         try:
             resp = requests.post(f"{API_BASE_URL}/insert/sents", json=payload, timeout=30)
             resp.raise_for_status()
             print(f"✅ 例文の保存に成功しました :", resp.json())
-            conmplete += 1
+            done += 1
         except requests.RequestException as e:
             print(f"⚠️ 例文の保存に失敗しました :", e)
     else:
@@ -120,9 +120,9 @@ for phrase in phrases:
         try:
             resp = requests.post(f"{API_BASE_URL}/insert/outputs", json=out, timeout=30)
             resp.raise_for_status()
-            print(f"📝 誤ったJSON出力の保存に成功しました (phrase_id={phrase_id}):", resp.json())
+            print(f"📝 誤ったJSON出力の保存に成功しました:", resp.json())
         except requests.RequestException as e:
-            print(f"⚠️ 誤ったJSON出力の保存に失敗しました (phrase_id={phrase_id}):", e)
+            print(f"⚠️ 誤ったJSON出力の保存に失敗しました:", e)
 
     # 連投しすぎないように（任意）
     time.sleep(0.3)
