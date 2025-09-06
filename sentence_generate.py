@@ -7,6 +7,7 @@ def validate_output(text: str):
     try:
         data = json.loads(text)
         if not isinstance(data, list) or len(data) == 0:
+            print("空の配列または配列ではありません")
             return {"data": text, "error": "空の配列または配列ではありません"}
         for i, item in enumerate(data, start=1):
             if not isinstance(item, dict):
@@ -58,6 +59,8 @@ r = requests.get(f"{API_BASE_URL}/fetch/phrases", timeout=60)
 r.raise_for_status()
 phrases = r.json()["rows"]
 
+done = 0
+
 for phrase in phrases:
     en = phrase["en"]
     ja = phrase["ja"]
@@ -107,11 +110,12 @@ for phrase in phrases:
             resp = requests.post(f"{API_BASE_URL}/insert/sents", json=payload, timeout=30)
             resp.raise_for_status()
             print(f"✅ 例文の保存に成功しました (phrase_id={phrase_id}):", resp.json())
+            conmplete += 1
         except requests.RequestException as e:
             print(f"⚠️ 例文の保存に失敗しました (phrase_id={phrase_id}):", e)
     else:
         # 失敗ログ
-        print(f"📝 正しいJSONの出力に失敗しました")
+        print(f"📝 正しいJSONの出力に失敗しました: result['error']")
         out = {"text": text, "phrase": phrase_id, "score": "bad", "comment": result["error"]}
         try:
             resp = requests.post(f"{API_BASE_URL}/insert/outputs", json=out, timeout=30)
@@ -122,3 +126,6 @@ for phrase in phrases:
 
     # 連投しすぎないように（任意）
     time.sleep(0.3)
+
+
+print(f"例文生成数:{done} 件")
