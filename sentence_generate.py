@@ -66,7 +66,7 @@ for phrase in phrases:
     ja = phrase["ja"]
     phrase_id = phrase["id"]
 
-    user_prompt = f"フレーズ：{en}（{ja}）。 個数：3。"
+    user_prompt = f"フレーズ：{en}（{ja}）。 個数：20。"
     messages = [
         {"role": "system", "content": sys},
         {"role": "user", "content": user_prompt}
@@ -109,10 +109,10 @@ for phrase in phrases:
         try:
             resp = requests.post(f"{API_BASE_URL}/insert/sents", json=payload, timeout=30)
             resp.raise_for_status()
-            print(f"✅ 例文の保存に成功しました (phrase_id={phrase_id}):", resp.json())
+            print(f"✅ 例文の保存に成功しました :", resp.json())
             conmplete += 1
         except requests.RequestException as e:
-            print(f"⚠️ 例文の保存に失敗しました (phrase_id={phrase_id}):", e)
+            print(f"⚠️ 例文の保存に失敗しました :", e)
     else:
         # 失敗ログ
         print(f"📝 正しいJSONの出力に失敗しました: result['error']")
